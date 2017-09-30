@@ -1,0 +1,60 @@
+Following is the Readme file for Shell(Written in C) developed for CS 341 Operating Systems Course of IIT guwahati .
+Team members : 
+   			1. Anirudh Sharma  --> 	150101006
+   			2. Ayush Soni      --> 	150101014
+   			3. SHUBHANSHU VERMA-->  150101073
+Contribution of each team member: 
+1. Anirudh Sharma : implemented arbituary program execution with input , output redirection and timeout
+					after provided m time and rmexcept by iterating all the files in directory and not removing files from given list of files  .
+2. Ayush Soni     : implement cs using cwd , history using linked list also implemented issue by 							retreiveing n th command from history linked list .  					
+3. shubhanshu verma:implemented ls by iterating using DIR data-structure , rm using remove and recursive 
+					approach from -r .	
+
+
+How to run : 
+1. extract the files (if you have compressed folder) . 
+2. open the directory of unzipped folder in terminal and type 'make'  . 
+3. run  ./shell and you are good to go . 
+
+ 
+Currently installed features : (Commands which shell will execute) 
+- cd args             --> cd command will help in changing working directory ,args will contain name of 
+						  directory to up or ".." to move down directory .
+- ls				  --> ls command will show files and directories in currently working directory .  	
+- rm args1 args2	  --> rm command will remove specified file . args will contain name of file or   
+                          directory to be deleted . 
+    -r (rm -r args2)  --> will be able to delete directory or file specified in args2 . For directory
+						  Code will recursively delete all file from directory and the rmdir the current directory .
+    -f (rm -f args2)  --> Will delete file withput prompt
+    -v (rm -v args2)  --> will prompt before deleteing the file
+- history n           --> will show previously ran n commands . if n not specified it will show all 
+  						  user given commands 
+- issue n             --> will re-run n'th command
+- rmexcept <list_of_files>   --> Will remove all the files except those mentioned in <list_of_files>  
+                                from current working directory .
+- <program_name> m < input > output --> will run any executable program where m is timeout time . input 
+                                        output file can be used as re-directed input and output .
+- exit                 --> will exit the shell .                                         
+About Code : 
+Datastructures      ==> 
+   1. struct history : is used to save history in form of Doubly linked list . 
+Function definition ==>
+   1. printDir()   : will print currently working directory using system call cwd() 
+   2. returnDir()  : will return currently working directory as char *  ; 
+   3. buildPrompt(): will take command as input from user. 
+   4. rmtree()     : will take directory as input and recursively delete all the files form the directory 
+                     makeing it empty and finally removing empty directory by rmdir() system call .  
+
+   5. inBuiltCmd()  : will check if the given command is built in function . if its built 
+                     in-command proper funtioning is selected via switch statement .                    
+   6. parse()       : will parse the input command . we have used strsep to seprate diffrent arguments of 
+                     commands seprated by space .  						                  
+   7. parseString() : this function will call parse and inbuiltCmd funtion to first parse the input 					   command and then check wether it is in built command .                  
+   8. kill_child()  : this funtion will kill the process during which processing it is called . 	  
+   9. execArgs()    : this function will run non-built in-commands . a child process is created to 
+                      implement it . signal , alarm , SIGALRM are used to kill child process if it exceed
+                      the time limit . dup2 is used to redirect input and output to files if given proper arguments . 
+   10.runCommand()  : is used as base function called by main to run parseString() command .
+   
+Note 
+1. issue n : if command n'th command in history is issue n , n being same then the issue will go in   				 recursion crashing the shell . therefore we have implemented code shuch that in this  				     situation there will be an error message telling the problem . 
